@@ -2,9 +2,39 @@
 #include <string>
 #include "setSimple.h"
 #include "setOperations.h"
+#include <random>
+#include <chrono>
+#include <fstream>
+
+void measureTimeComplexity()
+{
+    std::ofstream outfile("time_complexity_results.txt");
+
+    for (int n = 10; n <= 1000; n += 10)
+    {
+        setSimple A(n, "A");
+        setSimple B(n, "B");
+
+        for (int i = 0; i < n; ++i)
+        {
+            A.add(rand());
+            B.add(rand());
+        }
+
+        auto start = std::chrono::high_resolution_clock::now();
+        setSimple C = setUnion(A, B);
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        outfile << n << " " << duration.count() << std::endl;
+    }
+
+    outfile.close();
+}
 
 int main()
 {
+
+    measureTimeComplexity();
     setSimple A(10, "A");
     setSimple B(20, "B");
 

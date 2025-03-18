@@ -23,7 +23,7 @@ public:
 
 setSimple::setSimple(int size, std::string name)
 {
-    std::cout << "setSimple constructor name: " << name << std::endl;
+    // std::cout << "setSimple constructor name: " << name << std::endl;
     capacity = size;
     count = 0;
     elements = new int[capacity];
