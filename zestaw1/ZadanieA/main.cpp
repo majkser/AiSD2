@@ -12,22 +12,30 @@ void measureTimeComplexity()
 
     for (int n = 10; n <= 1000; n += 10)
     {
-        setSimple A(n, "A");
-        setSimple B(n, "B");
-
-        for (int i = 0; i < n; ++i)
+        double total = 0;
+        for (int k = 0; k < 100; k++)
         {
-            A.add(rand());
-            B.add(rand());
+
+            setSimple A(n, "A");
+            setSimple B(n, "B");
+
+            for (int i = 0; i < n; ++i)
+            {
+                A.add(rand());
+                B.add(rand());
+            }
+
+            auto start = std::chrono::high_resolution_clock::now();
+            setSimple C = setUnion(A, B);
+            auto end = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> duration = end - start;
+
+            total += duration.count();
         }
 
-        auto start = std::chrono::high_resolution_clock::now();
-        setSimple C = setUnion(A, B);
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> duration = end - start;
-        outfile << n << " " << duration.count() << std::endl;
+        double avg = total / 100;
+        outfile << n << " " << avg << std::endl;
     }
-
     outfile.close();
 }
 
