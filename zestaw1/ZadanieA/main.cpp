@@ -13,7 +13,7 @@ void measureTimeComplexity()
     for (int n = 10; n <= 1000; n += 10)
     {
         double total = 0;
-        for (int k = 0; k < 100; k++)
+        for (int k = 0; k < 200; k++)
         {
 
             setSimple A(n, "A");
@@ -33,7 +33,7 @@ void measureTimeComplexity()
             total += duration.count();
         }
 
-        double avg = total / 100;
+        double avg = total / 200;
         outfile << n << " " << avg << std::endl;
     }
     outfile.close();
