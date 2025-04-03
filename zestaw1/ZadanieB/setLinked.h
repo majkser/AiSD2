@@ -77,26 +77,38 @@ void setLinked::add(int value)
 
 void setLinked::remove(int value)
 {
-    // for (int i = 0; i < count; i++)
-    // {
-    //     if (elements[i] == value)
-    //     {
-    //         elements[i] = elements[count - 1];
-    //         count--;
-    //         break;
-    //     }
-    // }
+    if (head == nullptr)
+    {
+        return;
+    }
+
+    Node *current = head;
+
+    while (current->next != nullptr)
+    {
+        if (current->next->value == value)
+        {
+            Node *prev = current;
+            prev->next = current->next->next;
+            return;
+        }
+
+        current = current->next;
+    }
 }
 
 bool setLinked::contains(int value)
 {
-    // for (int i = 0; i < count; i++)
-    // {
-    //     if (elements[i] == value)
-    //     {
-    //         return true;
-    //     }
-    // }
+    Node *current = head;
+    while (current != nullptr)
+    {
+        if (current->value == value)
+        {
+            return true;
+        }
+        current = current->next;
+    }
+
     return false;
 }
 
