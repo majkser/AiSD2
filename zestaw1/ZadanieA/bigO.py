@@ -24,42 +24,35 @@ def read_data(filename):
     return np.array(sizes), np.array(times)
 
 # Plot the data
-def plot_time_complexity():
-    sizes, times = read_data('time_complexity_results.txt')
+
+def plot_data(dataFile, title, xlabel, ylabel, filename):
+    sizes, times = read_data(dataFile)
     
     plt.figure(figsize=(10, 6))
     
     # Plot the measured data points
-    plt.scatter(sizes, times, color='blue', label='Measured times')
-    plt.plot(sizes, times, 'b-', alpha=0.5)
-    
-    # Optional: Add trend lines to identify complexity
-    # For O(n²)
-    coef_quad = np.polyfit(sizes, times, 2)
-    quad_fit = np.poly1d(coef_quad)
-    plt.plot(sizes, quad_fit(sizes), 'r--', label=f'O(n²) fit')
-    
-    # For O(n)
-    coef_lin = np.polyfit(sizes, times, 1)
-    lin_fit = np.poly1d(coef_lin)
-    plt.plot(sizes, lin_fit(sizes), 'g--', label=f'O(n) fit')
-    
+    plt.scatter(sizes, times, color='red', label='Measured times')
+    plt.plot(sizes, times, 'r-', alpha=0.5)
+
     # Add labels and title
-    plt.xlabel('Input Size (n)')
-    plt.ylabel('Execution Time (seconds)')
-    plt.title('Time Complexity Analysis of setUnion Operation')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
     plt.grid(True)
     plt.legend()
     
-    # Optional: Annotate the complexity
-    max_size = max(sizes)
-    max_time = max(times)
-    
     # Save the plot
-    plt.savefig('time_complexity_plot.png')
+    plt.savefig(filename)
     
     # Show the plot
     plt.show()
-
+    
 if __name__ == "__main__":
-    plot_time_complexity()
+    plot_data('time_complexity_results_union_setSimple.txt', 'Time Complexity Analysis of setUnion Operation', 'Input Size (n)', 'Execution Time (seconds)', 'plot_union_setSimple.png')
+    plot_data('time_complexity_results_Intersection_setSimple.txt', 'Time Complexity Analysis of setIntersection Operation', 'Input Size (n)', 'Execution Time (seconds)', 'plot_intersection_setSimple.png')
+    plot_data('time_complexity_results_Diff_setSimple.txt', 'Time Complexity Analysis of setDiff Operation', 'Input Size (n)', 'Execution Time (seconds)', 'plot_diff_setSimple.png')
+    plot_data('time_complexity_results_Identity_setSimple.txt', 'Time Complexity Analysis of setIdentity Operation', 'Input Size (n)', 'Execution Time (seconds)', 'plot_identity_setSimple.png')
+    # Add plotting for basic operations
+    plot_data('time_complexity_results_Add_setSimple.txt', 'Time Complexity Analysis of Add Operation', 'Input Size (n)', 'Execution Time (seconds)', 'plot_add_setSimple.png')
+    plot_data('time_complexity_results_Remove_setSimple.txt', 'Time Complexity Analysis of Remove Operation', 'Input Size (n)', 'Execution Time (seconds)', 'plot_remove_setSimple.png')
+    plot_data('time_complexity_results_Contains_setSimple.txt', 'Time Complexity Analysis of Contains Operation', 'Input Size (n)', 'Execution Time (seconds)', 'plot_contains_setSimple.png')
