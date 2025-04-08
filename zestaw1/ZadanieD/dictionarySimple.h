@@ -35,6 +35,12 @@ dictionarySimple::~dictionarySimple()
 
 void dictionarySimple::add(std::string value)
 {
+    if (contains(value))
+    {
+        std::cout << "Value already exists" << std::endl;
+        return;
+    }
+
     if (count < capacity)
     {
         elements[count++] = value;
