@@ -82,6 +82,14 @@ void setLinked::remove(int value)
         return;
     }
 
+    if (head->value == value)
+    {
+        Node *temp = head;
+        head = head->next;
+        delete temp;
+        return;
+    }
+
     Node *current = head;
 
     while (current->next != nullptr)
