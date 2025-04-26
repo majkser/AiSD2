@@ -10,21 +10,36 @@ setLinked setUnion(setLinked A, setLinked B)
     setLinked result = setLinked();
 
     Node *currentA = A.head;
+    Node *currentB = B.head;
+
+    while (currentA != nullptr && currentB != nullptr)
+    {
+        if (currentA->value == currentB->value)
+        {
+            result.add(currentA->value);
+            currentA = currentA->next;
+            currentB = currentB->next;
+        }
+        else if (currentA->value < currentB->value)
+        {
+            result.add(currentA->value);
+            currentA = currentA->next;
+        }
+        else if (currentA->value > currentB->value)
+        {
+            result.add(currentB->value);
+            currentB = currentB->next;
+        }
+    }
 
     while (currentA != nullptr)
     {
         result.add(currentA->value);
         currentA = currentA->next;
     }
-
-    Node *currentB = B.head;
-
     while (currentB != nullptr)
     {
-        if (!result.contains(currentB->value))
-        {
-            result.add(currentB->value);
-        }
+        result.add(currentB->value);
         currentB = currentB->next;
     }
 
@@ -35,14 +50,26 @@ setLinked setIntersection(setLinked A, setLinked B)
 {
     setLinked result = setLinked();
     Node *currentA = A.head;
-    while (currentA != nullptr)
+    Node *currentB = B.head;
+
+    while (currentA != nullptr && currentB != nullptr)
     {
-        if (B.contains(currentA->value))
+        if (currentA->value == currentB->value)
         {
             result.add(currentA->value);
+            currentA = currentA->next;
+            currentB = currentB->next;
         }
-        currentA = currentA->next;
+        else if (currentA->value < currentB->value)
+        {
+            currentA = currentA->next;
+        }
+        else
+        {
+            currentB = currentB->next;
+        }
     }
+
     return result;
 };
 
@@ -50,40 +77,50 @@ setLinked setDiff(setLinked A, setLinked B)
 {
     setLinked result = setLinked();
     Node *currentA = A.head;
+    Node *currentB = B.head;
+
     while (currentA != nullptr)
     {
-        if (!B.contains(currentA->value))
+        if (currentB == nullptr)
         {
             result.add(currentA->value);
+            currentA = currentA->next;
         }
-        currentA = currentA->next;
+        else if (currentA->value == currentB->value)
+        {
+            currentA = currentA->next;
+            currentB = currentB->next;
+        }
+        else if (currentA->value < currentB->value)
+        {
+            result.add(currentA->value);
+            currentA = currentA->next;
+        }
+        else
+        {
+            currentB = currentB->next;
+        }
     }
+
     return result;
 };
 
 bool setIdentity(setLinked A, setLinked B)
 {
     Node *currentA = A.head;
-    while (currentA != nullptr)
+    Node *currentB = B.head;
+
+    while (currentA != nullptr && currentB != nullptr)
     {
-        if (!B.contains(currentA->value))
+        if (currentA->value != currentB->value)
         {
             return false;
         }
         currentA = currentA->next;
-    }
-
-    Node *currentB = B.head;
-    while (currentB != nullptr)
-    {
-        if (!A.contains(currentB->value))
-        {
-            return false;
-        }
         currentB = currentB->next;
     }
 
-    return true;
+    return currentA == nullptr && currentB == nullptr;
 };
 
 #endif // SETOPERATIONS_H
