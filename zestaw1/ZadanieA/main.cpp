@@ -133,38 +133,38 @@ void measureTimeComplexity()
 
 int main()
 {
-    // setSimple A(10, "A");
-    // setSimple B(20, "B");
+    setSimple A(10, "A");
+    setSimple B(20, "B");
 
-    // std::cout << std::boolalpha;
-    // A.add(1);
-    // A.add(2);
-    // A.add(3);
-    // A.add(12);
-    // A.add(13);
-    // A.remove(2);
+    std::cout << std::boolalpha;
+    A.add(1);
+    A.add(2);
+    A.add(3);
+    A.add(12);
+    A.add(13);
+    A.remove(2);
 
-    // B.add(3);
-    // B.add(4);
-    // B.add(1);
-    // B.add(5);
+    B.add(3);
+    B.add(4);
+    B.add(1);
+    B.add(5);
 
-    // setSimple C = setUnion(A, B);
-    // setSimple D = setIntersection(A, B);
-    // setSimple E = setDiff(A, B);
-    // std::cout << "A: ";
-    // A.display();
-    // std::cout << "B: ";
-    // B.display();
-    // std::cout << "A union B: ";
-    // C.display();
-    // std::cout << "A intersection B: ";
-    // D.display();
-    // std::cout << "A diff B: ";
-    // E.display();
+    setSimple C = setUnion(A, B);
+    setSimple D = setIntersection(A, B);
+    setSimple E = setDiff(A, B);
+    std::cout << "A: ";
+    A.display();
+    std::cout << "B: ";
+    B.display();
+    std::cout << "A union B: ";
+    C.display();
+    std::cout << "A intersection B: ";
+    D.display();
+    std::cout << "A diff B: ";
+    E.display();
 
-    // std::cout << "A === B: " << setIdentity(A, B);
+    std::cout << "A === B: " << setIdentity(A, B);
 
-    measureTimeComplexity();
+    // measureTimeComplexity();
     return 0;
 }
