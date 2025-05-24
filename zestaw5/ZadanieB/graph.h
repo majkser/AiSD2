@@ -12,22 +12,22 @@ class graph
 private:
     int **adjacencyMatrix;
     int numberOfVertices;
-    std::unordered_map<int, int> verticesValues;
+    std::unordered_map<std::string, int> verticesValues;
     int numberOfEdges;
 
 public:
     graph(int vertices);
-    ~graph() = default;
-    bool adjacent(int vertex1, int vertex2);
-    std::vector<int> neighbors(int vertex);
-    void addVertex(int vertex);
-    void removeVertex(int vertex);
-    void addEdge(int vertex1, int vertex2);
-    void removeEdge(int vertex1, int vertex2);
-    int getVertexValue(int vertex);
-    void setVertexValue(int vertex, int value);
-    int getEdgeValue(int vertex1, int vertex2);
-    void setEdgeValue(int vertex1, int vertex2, int value);
+    ~graph(); // Changed to custom destructor
+    bool adjacent(const std::string &vertex1, const std::string &vertex2);
+    std::vector<std::string> neighbors(const std::string &vertex);
+    void addVertex(const std::string &vertex);
+    void removeVertex(const std::string &vertex);
+    void addEdge(const std::string &vertex1, const std::string &vertex2);
+    void removeEdge(const std::string &vertex1, const std::string &vertex2);
+    int getVertexValue(const std::string &vertex);
+    void setVertexValue(const std::string &vertex, int value);
+    int getEdgeValue(const std::string &vertex1, const std::string &vertex2);
+    void setEdgeValue(const std::string &vertex1, const std::string &vertex2, int value);
     void display();
     void generateDotFile(const std::string &filename);
 };
@@ -47,43 +47,46 @@ graph::graph(int vertices)
         {
             adjacencyMatrix[i][j] = 0;
         }
-        verticesValues.insert({i, i});
+
+        // Generate a letter A, B, C, etc. for initial vertices
+        char letter = 'A' + i;
+        std::string vertexName(1, letter);
+        verticesValues.insert({vertexName, i});
     }
 }
 
-bool graph::adjacent(int vertex1, int vertex2)
+bool graph::adjacent(const std::string &vertex1, const std::string &vertex2)
 {
-    if (vertex1 >= 0 && vertex2 >= 0)
+    if (verticesValues.contains(vertex1) && verticesValues.contains(vertex2))
     {
         return adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] != 0;
     }
     return false;
 }
 
-std::vector<int> graph::neighbors(int vertex)
+std::vector<std::string> graph::neighbors(const std::string &vertex)
 {
-    if (vertex < 0 || !verticesValues.contains(vertex))
+    if (!verticesValues.contains(vertex))
     {
         std::cout << "Vertex does not exist." << std::endl;
         return {};
     }
 
     int index = verticesValues.at(vertex);
-    std::vector<int> neighbors;
+    std::vector<std::string> neighbors;
 
     for (int i = 0; i < numberOfVertices; i++)
     {
         if (adjacencyMatrix[index][i] != 0)
         {
-            std::unordered_map<int, int>::iterator it = verticesValues.begin();
-            while (it != verticesValues.end())
+            // Find which vertex name corresponds to matrix index i
+            for (const auto &[vtxName, idx] : verticesValues)
             {
-                if (it->second == i)
+                if (idx == i)
                 {
-                    neighbors.push_back(it->first);
+                    neighbors.push_back(vtxName);
                     break;
                 }
-                it++;
             }
         }
     }
@@ -97,7 +100,7 @@ std::vector<int> graph::neighbors(int vertex)
     return neighbors;
 }
 
-void graph::addVertex(int vertex)
+void graph::addVertex(const std::string &vertex)
 {
     if (verticesValues.contains(vertex))
     {
@@ -136,7 +139,7 @@ void graph::addVertex(int vertex)
     verticesValues.insert({vertex, newSize - 1});
 }
 
-void graph::removeVertex(int vertex)
+void graph::removeVertex(const std::string &vertex)
 {
     if (!verticesValues.contains(vertex))
     {
@@ -172,41 +175,66 @@ void graph::removeVertex(int vertex)
             }
         }
     }
+
+    // Free old matrix memory
+    for (int i = 0; i < numberOfVertices; i++)
+    {
+        delete[] adjacencyMatrix[i];
+    }
+    delete[] adjacencyMatrix;
+
     adjacencyMatrix = newAdjecencyMatrix;
     numberOfVertices = newSize;
     verticesValues.erase(vertex);
+
+    // Update indices of remaining vertices
+    for (auto &[vtx, idx] : verticesValues)
+    {
+        if (idx > index)
+        {
+            idx--;
+        }
+    }
 }
 
-void graph::addEdge(int vertex1, int vertex2)
+void graph::addEdge(const std::string &vertex1, const std::string &vertex2)
 {
-    if (vertex1 >= 0 && vertex2 >= 0)
+    if (verticesValues.contains(vertex1) && verticesValues.contains(vertex2))
     {
         adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] = 1;
         numberOfEdges++;
     }
+    else
+    {
+        std::cout << "One or both vertices do not exist." << std::endl;
+    }
 }
 
-void graph::removeEdge(int vertex1, int vertex2)
+void graph::removeEdge(const std::string &vertex1, const std::string &vertex2)
 {
-    if (vertex1 >= 0 && vertex2 >= 0 && vertex1 < numberOfVertices && vertex2 < numberOfVertices)
+    if (verticesValues.contains(vertex1) && verticesValues.contains(vertex2))
     {
         adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] = 0;
         numberOfEdges--;
     }
+    else
+    {
+        std::cout << "One or both vertices do not exist." << std::endl;
+    }
 }
 
-int graph::getVertexValue(int vertex)
+int graph::getVertexValue(const std::string &vertex)
 {
-    if (vertex >= 0 && verticesValues.contains(vertex))
+    if (verticesValues.contains(vertex))
     {
         return verticesValues.at(vertex);
     }
     return -1; // Invalid vertex
 }
 
-void graph::setVertexValue(int vertex, int value)
+void graph::setVertexValue(const std::string &vertex, int value)
 {
-    if (vertex >= 0 && verticesValues.contains(vertex))
+    if (verticesValues.contains(vertex))
     {
         verticesValues[vertex] = value;
     }
@@ -216,18 +244,18 @@ void graph::setVertexValue(int vertex, int value)
     }
 }
 
-int graph::getEdgeValue(int vertex1, int vertex2)
+int graph::getEdgeValue(const std::string &vertex1, const std::string &vertex2)
 {
-    if (vertex1 >= 0 && vertex2 >= 0)
+    if (verticesValues.contains(vertex1) && verticesValues.contains(vertex2))
     {
         return adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)];
     }
     return -1; // Invalid edge
 }
 
-void graph::setEdgeValue(int vertex1, int vertex2, int value)
+void graph::setEdgeValue(const std::string &vertex1, const std::string &vertex2, int value)
 {
-    if (vertex1 >= 0 && vertex2 >= 0 && vertex1 < numberOfVertices && vertex2 < numberOfVertices)
+    if (verticesValues.contains(vertex1) && verticesValues.contains(vertex2))
     {
         adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] = value;
     }
@@ -258,22 +286,29 @@ void graph::generateDotFile(const std::string &filename)
 
     dotFile << "digraph G {" << std::endl;
 
-    std::unordered_map<int, int>::iterator it = verticesValues.begin();
-    while (it != verticesValues.end())
+    for (const auto &[vertex, index] : verticesValues)
     {
-        int vertex = it->first;
-        std::vector<int> neighborsList = neighbors(vertex);
+        std::vector<std::string> neighborsList = neighbors(vertex);
 
-        for (int neighbor : neighborsList)
+        for (const std::string &neighbor : neighborsList)
         {
-            dotFile << "    " << vertex << " -> " << neighbor << ";" << std::endl;
+            // Quote the vertex names to handle special characters
+            dotFile << "    \"" << vertex << "\" -> \"" << neighbor << "\";" << std::endl;
         }
-
-        it++;
     }
+
     dotFile << "}" << std::endl;
     dotFile.close();
     std::cout << "DOT file generated: " << filename << std::endl;
+}
+
+graph::~graph()
+{
+    for (int i = 0; i < numberOfVertices; i++)
+    {
+        delete[] adjacencyMatrix[i];
+    }
+    delete[] adjacencyMatrix;
 }
 
 #endif // graph_h
