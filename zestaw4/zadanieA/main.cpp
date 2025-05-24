@@ -26,8 +26,8 @@ int main()
     graph1.display();
     graph1.removeVertex(5);
     graph1.display();
-    std::vector<int> neighbors = graph1.neighbors(6);
-    std::cout << "Neighbors of vertex " << 6 << ": ";
+    std::vector<int> neighbors = graph1.neighbors(1);
+    std::cout << "Neighbors of vertex " << 1 << ": ";
     for (int neighbor : neighbors)
     {
         std::cout << neighbor << " ";

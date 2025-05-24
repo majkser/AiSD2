@@ -73,7 +73,16 @@ std::vector<int> graph::neighbors(int vertex)
     {
         if (adjacencyMatrix[index][i] != 0)
         {
-            neighbors.push_back(verticesValues.at(i));
+            std::unordered_map<int, int>::iterator it = verticesValues.begin();
+            while (it != verticesValues.end())
+            {
+                if (it->second == i)
+                {
+                    neighbors.push_back(it->first);
+                    break;
+                }
+                it++;
+            }
         }
     }
 
@@ -171,7 +180,7 @@ void graph::addEdge(int vertex1, int vertex2)
     if (vertex1 >= 0 && vertex2 >= 0)
     {
         adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] = 1;
-        adjacencyMatrix[verticesValues.at(vertex2)][verticesValues.at(vertex1)] = 1;
+
         numberOfEdges++;
     }
 }
@@ -181,7 +190,7 @@ void graph::removeEdge(int vertex1, int vertex2)
     if (vertex1 >= 0 && vertex2 >= 0 && vertex1 < numberOfVertices && vertex2 < numberOfVertices)
     {
         adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] = 0;
-        adjacencyMatrix[verticesValues.at(vertex2)][verticesValues.at(vertex1)] = 0;
+
         numberOfEdges--;
     }
 }
@@ -221,7 +230,6 @@ void graph::setEdgeValue(int vertex1, int vertex2, int value)
     if (vertex1 >= 0 && vertex2 >= 0 && vertex1 < numberOfVertices && vertex2 < numberOfVertices)
     {
         adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] = value;
-        adjacencyMatrix[verticesValues.at(vertex2)][verticesValues.at(vertex1)] = value;
     }
 }
 
