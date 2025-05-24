@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 class graph
 {
@@ -17,7 +18,7 @@ public:
     graph(int vertices);
     ~graph() = default;
     bool adjacent(int vertex1, int vertex2);
-    void neighbors(int vertex);
+    std::vector<int> neighbors(int vertex);
     void addVertex(int vertex);
     void removeVertex(int vertex);
     void addEdge(int vertex1, int vertex2);
@@ -55,6 +56,34 @@ bool graph::adjacent(int vertex1, int vertex2)
         return adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] != 0;
     }
     return false;
+}
+
+std::vector<int> graph::neighbors(int vertex)
+{
+    if (vertex < 0 || !verticesValues.contains(vertex))
+    {
+        std::cout << "Vertex does not exist." << std::endl;
+        return {};
+    }
+
+    int index = verticesValues.at(vertex);
+    std::vector<int> neighbors;
+
+    for (int i = 0; i < numberOfVertices; i++)
+    {
+        if (adjacencyMatrix[index][i] != 0)
+        {
+            neighbors.push_back(verticesValues.at(i));
+        }
+    }
+
+    if (neighbors.empty())
+    {
+        std::cout << "No neighbors found for vertex " << vertex << "." << std::endl;
+        return {};
+    }
+
+    return neighbors;
 }
 
 void graph::addVertex(int vertex)
@@ -107,7 +136,34 @@ void graph::removeVertex(int vertex)
     int index = verticesValues.at(vertex);
     int newSize = numberOfVertices - 1;
     int **newAdjecencyMatrix = new int *[newSize];
-    // todo: finish this method and add the rest of the methods
+
+    for (int i = 0; i < newSize; i++)
+    {
+        newAdjecencyMatrix[i] = new int[newSize];
+
+        for (int j = 0; j < newSize; j++)
+        {
+            if (i < index && j < index)
+            {
+                newAdjecencyMatrix[i][j] = adjacencyMatrix[i][j];
+            }
+            else if (i < index && j >= index)
+            {
+                newAdjecencyMatrix[i][j] = adjacencyMatrix[i][j + 1];
+            }
+            else if (i >= index && j < index)
+            {
+                newAdjecencyMatrix[i][j] = adjacencyMatrix[i + 1][j];
+            }
+            else
+            {
+                newAdjecencyMatrix[i][j] = adjacencyMatrix[i + 1][j + 1];
+            }
+        }
+    }
+    adjacencyMatrix = newAdjecencyMatrix;
+    numberOfVertices = newSize;
+    verticesValues.erase(vertex);
 }
 
 void graph::addEdge(int vertex1, int vertex2)
@@ -127,6 +183,27 @@ void graph::removeEdge(int vertex1, int vertex2)
         adjacencyMatrix[verticesValues.at(vertex1)][verticesValues.at(vertex2)] = 0;
         adjacencyMatrix[verticesValues.at(vertex2)][verticesValues.at(vertex1)] = 0;
         numberOfEdges--;
+    }
+}
+
+int graph::getVertexValue(int vertex)
+{
+    if (vertex >= 0 && verticesValues.contains(vertex))
+    {
+        return verticesValues.at(vertex);
+    }
+    return -1; // Invalid vertex
+}
+
+void graph::setVertexValue(int vertex, int value)
+{
+    if (vertex >= 0 && verticesValues.contains(vertex))
+    {
+        verticesValues[vertex] = value;
+    }
+    else
+    {
+        std::cout << "Vertex does not exist." << std::endl;
     }
 }
 
