@@ -1,0 +1,8 @@
+digraph G {
+    A -> B [label = "AB"];
+    B -> A [label = "BA"];
+    A -> C [label = "AC"];
+    C -> A [label = "CA"];
+    B -> C [label = "BC"];
+    C -> B [label = "CB"];
+}
