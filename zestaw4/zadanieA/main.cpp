@@ -2,6 +2,38 @@
 #include <string>
 #include "graph.h"
 
+void measureTimeComplexity()
+{
+    std::ofstream outfile("time_complexity_addEdge_graph.txt");
+
+    for (int n = 5; n <= 100; n += 2)
+    {
+        double totalAddEdge = 0;
+
+        graph g(n);
+
+        // First, create a graph with n vertices
+        for (int i = 0; i < n; i++)
+        {
+            g.addVertex(std::to_string(i)); // Add vertices named "0", "1", ..., "n-1"
+        }
+
+        const int trials = 100;
+        for (int k = 0; k < trials; k++)
+        {
+            // Add edge operation
+            auto startAddEdge = std::chrono::high_resolution_clock::now();
+            g.addEdge("0", "1"); // Example edge
+            auto endAddEdge = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> durationAddEdge = endAddEdge - startAddEdge;
+            totalAddEdge += durationAddEdge.count();
+        }
+        double avgAddEdge = totalAddEdge / trials;
+        outfile << n << " " << avgAddEdge << std::endl;
+    }
+    outfile.close();
+}
+
 int main()
 {
     // Create a graph with 5 initial vertices (A, B, C, D, E)
@@ -66,5 +98,6 @@ int main()
     graph1.setVertexValue("F", 10);
     std::cout << "Value of vertex F: " << graph1.getVertexValue("F") << std::endl;
 
+    measureTimeComplexity();
     return 0;
 }
