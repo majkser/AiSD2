@@ -80,14 +80,6 @@ graph buildGraph()
     {
         const std::vector<std::string> &words = pair.second;
 
-        // for (const auto &word : words)
-        // {
-        //     Vertex v = boost::add_vertex(Graph);
-        //     boost::put(boost::vertex_name, Graph, v, word);
-        //     wordToVertex[word] = v;
-        //     // std::cout << boost::get(boost::vertex_name, Graph, v) << std::endl;
-        // }
-
         for (size_t i = 0; i < words.size(); ++i)
         {
             for (size_t j = i + 1; j < words.size(); ++j)
@@ -95,10 +87,6 @@ graph buildGraph()
                 Vertex v1 = wordToVertex[words[i]];
                 Vertex v2 = wordToVertex[words[j]];
                 boost::add_edge(v1, v2, Graph);
-
-                // std::cout << "doodano krawedz miedzy: "
-                //           << boost::get(boost::vertex_name, Graph, v1) << " i "
-                //           << boost::get(boost::vertex_name, Graph, v2) << std::endl;
             }
         }
     }
@@ -156,7 +144,7 @@ void wordLadder()
             {
                 visited.insert(neighbor);
                 queue.push(neighbor);
-                std::cout << "Odwiedzono: " << boost::get(boost::vertex_name, Graph, neighbor) << std::endl;
+                // std::cout << "Odwiedzono: " << boost::get(boost::vertex_name, Graph, neighbor) << std::endl;
                 parentMap[neighbor] = currentVertex;
             }
         }
