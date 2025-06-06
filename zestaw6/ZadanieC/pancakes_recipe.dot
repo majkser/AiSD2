@@ -1,0 +1,24 @@
+digraph G {
+0[label="1 egg"];
+1[label="1 tablespoon of oil"];
+2[label="3/4 cup flour"];
+3[label="1 cup of panckake mix"];
+4[label="heat griddle"];
+5[label="mix ingredients"];
+6[label="pour 1/4 of the mix"];
+7[label="turn when golden brown"];
+8[label="heat the syroup"];
+9[label="take off when golden brwon from both sides"];
+10[label="eat with syroup"];
+0->5 ;
+1->5 ;
+2->5 ;
+3->5 ;
+4->6 ;
+5->8 ;
+5->6 ;
+6->7 ;
+7->9 ;
+8->10 ;
+9->10 ;
+}
