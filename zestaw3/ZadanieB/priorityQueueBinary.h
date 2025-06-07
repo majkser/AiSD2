@@ -18,6 +18,8 @@ public:
     void insert(int value);
     int deleteMin();
 
+    bool isEmpty() { return count == 0; }
+
     void display();
 };
 
