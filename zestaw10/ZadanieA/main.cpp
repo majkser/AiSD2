@@ -135,23 +135,9 @@ int main()
     std::vector<std::vector<int>> g2 = readGraphFromFile("g2");
     std::vector<std::vector<int>> g3 = readGraphFromFile("g3");
 
-    bool isG1Cyclic = isCyclic(g1);
-    if (isG1Cyclic)
-        std::cout << "Graph g1 is cyclic." << std::endl;
-    else
-        std::cout << "Graph g1 is acyclic." << std::endl;
-
-    bool isG2Cyclic = isCyclic(g2);
-    if (isG2Cyclic)
-        std::cout << "Graph g2 is cyclic." << std::endl;
-    else
-        std::cout << "Graph g2 is acyclic." << std::endl;
-
-    bool isG3Cyclic = isCyclic(g3);
-    if (isG3Cyclic)
-        std::cout << "Graph g3 is cyclic." << std::endl;
-    else
-        std::cout << "Graph g3 is acyclic." << std::endl;
+    std::cout << "Graph g1 is " << (isCyclic(g1) ? "cyclic" : "not cyclic") << std::endl;
+    std::cout << "Graph g2 is " << (isCyclic(g2) ? "cyclic" : "not cyclic") << std::endl;
+    std::cout << "Graph g3 is " << (isCyclic(g3) ? "cyclic" : "not cyclic") << std::endl;
 
     return 0;
 }
