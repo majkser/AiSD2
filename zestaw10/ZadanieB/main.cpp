@@ -27,7 +27,6 @@ std::vector<std::vector<int>> readGraphFromFile(const std::string &filename)
 
 bool isConsistent(std::vector<std::vector<int>> &Graph)
 {
-    // Check if the graph is directed or undirected
     bool isDirected = false;
     for (size_t i = 0; i < Graph.size() && !isDirected; ++i)
     {
@@ -49,7 +48,6 @@ bool isConsistent(std::vector<std::vector<int>> &Graph)
             {
                 if (Graph[i][j] == 1 || Graph[j][i] == 1)
                 {
-                    // Jeśli istnieje krawędź w którymkolwiek kierunku, dodaj w obu
                     Graph[i][j] = 1;
                     Graph[j][i] = 1;
                 }

@@ -49,7 +49,6 @@ bool isDirectedGraphCyclicRecurrence(std::vector<std::vector<int>> &Graph, int v
 
 bool isCyclic(std::vector<std::vector<int>> &Graph)
 {
-    // Najpierw sprawdź, czy graf jest skierowany czy nieskierowany
     bool isDirected = false;
     for (size_t i = 0; i < Graph.size() && !isDirected; ++i)
     {
